@@ -3,8 +3,6 @@
 /******************************************************************************/
 
 #define _XTAL_FREQ 4000000
-#pragma config WDTE = OFF       // Watchdog Timer (WDT disabled)
-//#pragma config PWRTE = ON       // Power-up Timer Enable bit (Power-up Timer is enabled)
 
 #if defined(__XC)
     #include <xc.h>         /* XC8 General Include File */

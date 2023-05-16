@@ -1,6 +1,3 @@
-/******************************************************************************/
-/*Files to Include                                                            */
-/******************************************************************************/
 #if defined(__XC)
     #include <xc.h>         /* XC8 General Include File */
 #elif defined(HI_TECH_C)
@@ -11,14 +8,6 @@
 #include <stdbool.h>        /* For true/false definition */
 
 #include "user.h"
-
-/******************************************************************************/
-/* Interrupt Routines                                                         */
-/******************************************************************************/
-
-/* Baseline devices don't have interrupts. Note that some PIC16's 
- * are baseline devices.  Unfortunately the baseline detection macro is 
- * _PIC12 */
 
 #define fosc    4 // ???
 #define mc      4 // ???????? ?????
@@ -41,12 +30,6 @@ void __interrupt() isr(void)
         if (PORTBbits.RB3 == 1) PORTBbits.RB3 = 0;
         else PORTBbits.RB3 = 1;
     }
-    RB3 = !RB3;
-//    if (RBIF && RBIE) {
-//        T0IE = 1;
-//        RBIF = 0;
-//        Play();
-//    }
 }
 #endif
 

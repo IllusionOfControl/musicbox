@@ -2,6 +2,10 @@
 /* Files to Include                                                           */
 /******************************************************************************/
 
+#define _XTAL_FREQ 4000000
+#pragma config WDTE = OFF       // Watchdog Timer (WDT disabled)
+//#pragma config PWRTE = ON       // Power-up Timer Enable bit (Power-up Timer is enabled)
+
 #if defined(__XC)
     #include <xc.h>         /* XC8 General Include File */
 #elif defined(HI_TECH_C)
@@ -23,6 +27,9 @@
 /******************************************************************************/
 /* Main Program                                                               */
 /******************************************************************************/
+
+
+
 void main(void)
 {
     /* Configure the oscillator for the device */
@@ -31,11 +38,13 @@ void main(void)
     /* Initialize I/O and Peripherals for application */
     InitApp();
 
-
-    while(1)
-    {
-        /* TODO <INSERT USER APPLICATION CODE HERE> */
+    while(1) {
+        if (!RB0) {
+            while (!RB0) __delay_ms(200);
+            Stop();
+            Play();
+        }
+        Tackt();
     }
-
 }
 

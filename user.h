@@ -1,22 +1,9 @@
-/******************************************************************************/
-/* User Level #define Macros                                                  */
-/******************************************************************************/
-
-/* TODO Application specific user parameters used in user.c may go here */
-
-/******************************************************************************/
-/* User Function Prototypes                                                   */
-/******************************************************************************/
-
-/* TODO User level functions prototypes (i.e. InitApp) go here */
-
-
 #define P       0
 #define D3      1
 #define F3      2
 #define G3      3
 #define G3d     4
-
+#define Empty   255
 
 
 const unsigned char song[] = {
@@ -58,7 +45,7 @@ const unsigned char song[] = {
     
 };
 
-void InitApp(void);         /* I/O and Peripheral Initialization */
+void InitApp(void);
 void Tackt(void);
 void NextNote(void);
 void Play(void);

@@ -11,3 +11,7 @@ This repository contains the source code for the Musicbox project. The Musicbox 
 ## How to run
 
 The _assets/ folder contains the firmware and the project for the Proteus Design Suite.
+
+## Scheme
+
+![image](_assets/scheme.jpg "Musicbox")

@@ -1,43 +1,39 @@
 #define _XTAL_FREQ 4000000
-#if defined(__XC)
-    #include <xc.h>         /* XC8 General Include File */
-#elif defined(HI_TECH_C)
-    #include <htc.h>        /* HiTech General Include File */
-#endif
+
+#include <xc.h>      
 
 #include <stdio.h>
-#include <stdint.h>         /* For uint8_t definition */
-#include <stdbool.h>        /* For true/false definition */
+#include <stdint.h>         
+#include <stdbool.h>        
 
 #include "user.h"
 
-unsigned char* note;
+unsigned char note = 0;
 unsigned char playedTimes = 0;
-bool isPlay = true;
+bool isPlay = false;
 
 void Repeat(void);
 bool IsEnd(void);
 
-void beep() {
+void beep(unsigned char note) {
+    switch(note) {
+        case D3: __delay_us(D3_Freq); break;
+        case F3: __delay_us(F3_Freq); break;
+        case G3: __delay_us(G3_Freq); break;
+        case G3d:__delay_us(G3d_Freq); break;
+        case P: return;
+    }
     if (PORTBbits.RB7 == 1) PORTBbits.RB7 = 0;
     else PORTBbits.RB7 = 1;
-    switch(*note) {
-        case D3: __delay_us(6810); break;
-        case F3: __delay_us(5730); break;
-        case G3: __delay_us(5100);break;
-        case G3d:__delay_us(4815); break;
-    }
 }
 
 
 void Tackt() {
-    if (*note == Empty) note++;
-    if (!isPlay || *note == P) return;
-    else if (playedTimes == 3) {
-        Stop();
-        return; 
-    }
-    else beep();
+    unsigned char currentNote = eeprom_read(note);
+    
+    if (!isPlay) return;
+    else if (playedTimes == 3) Stop();
+    else beep(currentNote);
 }
 
 
@@ -48,7 +44,7 @@ void Play(void) {
 
 void Stop(void) {
     isPlay = false;
-    note = (unsigned char*) &song[0];
+    note = 0;
     playedTimes = 0;
     T0IE = 0;
     T0IF = 0; 
@@ -57,21 +53,21 @@ void Stop(void) {
 
 void NextNote() {
     static unsigned char noteDuration = 4;
-    if (noteDuration > 0) noteDuration--;
+    if (noteDuration) noteDuration--;
     else {
         noteDuration = 4;
         
-        if (IsEnd()) note++;
+        if (!IsEnd()) note++;
         else Repeat();
     }
 }
 
 bool IsEnd() {
-    return note < &song[0] + sizeof(song) - 1;
+    return note > SONG_LENGHT - 1;
 }
 
 void Repeat() {
-    note = (unsigned char*) &song[0];
+    note = 0;
     playedTimes++;
 }
 
